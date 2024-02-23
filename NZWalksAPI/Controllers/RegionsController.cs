@@ -34,5 +34,33 @@ namespace NZWalksAPI.Controllers
             return Ok(regions);
 
         }
+
+
+        // GET REGION BY ID
+        // GET: https//localhost:portnumber/api/regions/{id}
+        [HttpGet]
+        [Route("{id:Guid}")]   // ":Guid" is not necessary - used for type safe
+
+        public IActionResult GetById([FromRoute]Guid id)    //"[FromRout]e" is not necessary
+        {
+
+            var region = _nZWalksDbContext.Regions.Find(id);
+            //"Find" method only takes the primary key( So we can't use it for other properties such as code, name etc..)
+
+            // Another Method
+            // var region1 = _nZWalksDbContext.Regions.FirstOrDefault(x => x.Id == id);
+            // "FirstorDefault" mathod work with any parameter - (x => x.Name == id) - Here, We should pass the "Name" in the route
+
+            if (region == null)
+            {
+                return NotFound();  //NotFound means 404
+            }
+
+            return Ok(region);
+
+
+
+
+        }
     }
 }

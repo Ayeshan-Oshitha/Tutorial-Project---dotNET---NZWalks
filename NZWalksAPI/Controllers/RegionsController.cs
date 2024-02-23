@@ -127,5 +127,51 @@ namespace NZWalksAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);  // Success code is 201
 
         }
+
+
+
+
+
+        // Update Region
+        // PUT: https//localhost:portnumber/api/regions/{id}
+
+
+        [HttpPut]
+        [Route("{id:Guid}")]
+
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
+        {
+
+
+            // Check if region exists
+            var regionDomainModel =  _nZWalksDbContext.Regions.FirstOrDefault( x => x.Id == id );
+
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+
+
+            //Map DTO to Domain model
+            regionDomainModel.Code = updateRegionRequestDto.Code;
+            regionDomainModel.Name = updateRegionRequestDto.Name;
+            regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
+
+            _nZWalksDbContext.SaveChanges();
+
+
+            //Convert Domain Model to DTO
+            var regionDto = new RegionDto
+            {
+                Id = regionDomainModel.Id,
+                Code = regionDomainModel.Code,
+                Name = regionDomainModel.Name,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+
+            return Ok(regionDto);
+        }
+
     }
 }

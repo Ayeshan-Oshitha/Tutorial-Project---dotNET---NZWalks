@@ -1,6 +1,6 @@
 ﻿namespace NZWalksAPI.Models.Domain
 {
-    public class Walks
+    public class Walk  // Walks renamed to walk
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

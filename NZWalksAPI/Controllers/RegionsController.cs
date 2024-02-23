@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
+using NZWalksAPI.Models.DTO;
 
 namespace NZWalksAPI.Controllers
 {
@@ -28,10 +29,25 @@ namespace NZWalksAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            // --- Get Data From Database - Domain models ---
+            var regionsDomain = _nZWalksDbContext.Regions.ToList();
 
-           var regions = _nZWalksDbContext.Regions.ToList();
+            // --- Map Domain Model to DTOs ---
 
-            return Ok(regions);
+            var regionsDto = new List<RegionDto>();
+            foreach (var regionDomain in regionsDomain)
+            {
+                regionsDto.Add(new RegionDto()
+                {
+                    Id = regionDomain.Id,
+                    Code = regionDomain.Code,
+                    Name = regionDomain.Name,
+                    RegionImageUrl = regionDomain.RegionImageUrl
+                });
+            }
+
+            // --- Return DTOs ---
+            return Ok(regionsDto);
 
         }
 
@@ -44,19 +60,35 @@ namespace NZWalksAPI.Controllers
         public IActionResult GetById([FromRoute]Guid id)    //"[FromRout]e" is not necessary
         {
 
-            var region = _nZWalksDbContext.Regions.Find(id);
+            // var region = _nZWalksDbContext.Regions.Find(id);
             //"Find" method only takes the primary key( So we can't use it for other properties such as code, name etc..)
 
-            // Another Method
-            // var region1 = _nZWalksDbContext.Regions.FirstOrDefault(x => x.Id == id);
+        
+            
+            
+            // --- Get Region Domain ---
+            var regionDomain = _nZWalksDbContext.Regions.FirstOrDefault(x => x.Id == id);
             // "FirstorDefault" mathod work with any parameter - (x => x.Name == id) - Here, We should pass the "Name" in the route
 
-            if (region == null)
+            if (regionDomain == null)
             {
                 return NotFound();  //NotFound means 404
             }
 
-            return Ok(region);
+
+            // --- Map Region Domain Model to Region Dto ---
+            var regionDto = new RegionDto()
+            {
+                Id = regionDomain.Id,
+                Code = regionDomain.Code,
+                Name = regionDomain.Name,
+                RegionImageUrl = regionDomain.RegionImageUrl
+            };
+
+
+
+            //Return DTO back to client
+            return Ok(regionDto);
 
 
 

@@ -35,5 +35,10 @@ namespace NZWalksAPI.Repositories
             // ToString make above type safe , we can use below code
             // return await _nZWalksDbContext.Walks.Include(x => x.Difficulty)
         }
+
+        public async Task<Walk?> GetByIdAsync(Guid id)
+        {
+            return await _nZWalksDbContext.Walks.Include("Difficulty").Include("Region").FirstOrDefaultAsync( x => x.Id == id);
+        }
     }
 }

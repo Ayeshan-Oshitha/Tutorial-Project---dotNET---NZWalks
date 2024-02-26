@@ -30,7 +30,10 @@ namespace NZWalksAPI.Repositories
 
         public async Task<List<Walk>> GetAllAsync()
         {
-            return await _nZWalksDbContext.Walks.ToListAsync();
+            return await _nZWalksDbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+
+            // ToString make above type safe , we can use below code
+            // return await _nZWalksDbContext.Walks.Include(x => x.Difficulty)
         }
     }
 }

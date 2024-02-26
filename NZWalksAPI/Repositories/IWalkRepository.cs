@@ -6,5 +6,7 @@ namespace NZWalksAPI.Repositories
     {
 
         Task<Walk> CreateAsync(Walk walk);
+
+        Task<List<Walk>> GetAllAsync(); //Won't require any input parmeter, as a return type, It will output a "List of walks"
     }
 }

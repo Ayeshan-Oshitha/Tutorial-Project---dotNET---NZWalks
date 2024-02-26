@@ -11,5 +11,8 @@ namespace NZWalksAPI.Repositories
 
 
         Task<Walk?> GetByIdAsync(Guid id);
+
+
+        Task<Walk?> UpdateAsync(Guid id, Walk walk);
     }
 }

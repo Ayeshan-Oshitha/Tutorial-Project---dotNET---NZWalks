@@ -7,7 +7,7 @@ namespace NZWalksAPI.Repositories
 
         Task<Walk> CreateAsync(Walk walk);
 
-        Task<List<Walk>> GetAllAsync(string? filterOn=null, string? filterQuery=null); //Won't require any input parmeter, as a return type, It will output a "List of walks"
+        Task<List<Walk>> GetAllAsync(string? filterOn=null, string? filterQuery=null, string? sortBy = null, bool isAscending = true); 
 
 
         Task<Walk?> GetByIdAsync(Guid id);

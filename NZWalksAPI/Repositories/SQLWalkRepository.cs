@@ -28,12 +28,24 @@ namespace NZWalksAPI.Repositories
 
         
 
-        public async Task<List<Walk>> GetAllAsync()
+        public async Task<List<Walk>> GetAllAsync(string? filterOn= null, string? filterQuery = null)
         {
-            return await _nZWalksDbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+            var walks = _nZWalksDbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
 
-            // ToString make above type safe , we can use below code
-            // return await _nZWalksDbContext.Walks.Include(x => x.Difficulty)
+            //Filtering
+            if (string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
+            {
+                if(filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase)) 
+                {
+                    walks = walks.Where( x=> x.Name.Contains(filterQuery));
+                }
+            }
+
+
+            return await walks.ToListAsync();
+            //return await _nZWalksDbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+
+
         }
 
         public async Task<Walk?> GetByIdAsync(Guid id)

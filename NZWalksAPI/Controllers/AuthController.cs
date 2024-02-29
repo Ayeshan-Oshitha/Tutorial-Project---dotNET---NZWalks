@@ -66,7 +66,7 @@ namespace NZWalksAPI.Controllers
                 {
 
                     //Create Token
-                    return Ok();
+                    
                 }
             }
 

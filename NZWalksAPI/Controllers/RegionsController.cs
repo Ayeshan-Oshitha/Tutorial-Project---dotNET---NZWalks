@@ -16,7 +16,7 @@ namespace NZWalksAPI.Controllers
 
     [ApiController]  // Tells taht, This Controller is for API use
 
-    [Authorize]   //401 error means unauthorized
+    
 
     //action methods - to create , read, update, delete
     public class RegionsController : ControllerBase
@@ -42,6 +42,7 @@ namespace NZWalksAPI.Controllers
         //GET ALL REGIONS
         // GET: https//localhost:portnumber/api/regions
         [HttpGet]
+        [Authorize(Roles = "Reader,Writer")]  // If everyone can access this Get method, Then we can do it by "not specifying the any roles"
         public async Task<IActionResult> GetAll()
         {
             // --- Get Data From Database - Domain models ---
@@ -65,7 +66,7 @@ namespace NZWalksAPI.Controllers
         // GET: https//localhost:portnumber/api/regions/{id}
         [HttpGet]
         [Route("{id:Guid}")]   // ":Guid" is not necessary - used for type safe
-
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute]Guid id)    //"[FromRout]e" is not necessary
         { 
             
@@ -96,7 +97,7 @@ namespace NZWalksAPI.Controllers
 
         [HttpPost]
         [ValidateModel]
-
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addRegionRequestDto)       //In post method, we receive the body from the client
         {
 
@@ -130,7 +131,7 @@ namespace NZWalksAPI.Controllers
         [HttpPut]
         [Route("{id:Guid}")]
         [ValidateModel]
-
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
 
@@ -167,6 +168,7 @@ namespace NZWalksAPI.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id) 
         {
            var regionDomainModel = await _regionRepository.DeleteAsync(id);

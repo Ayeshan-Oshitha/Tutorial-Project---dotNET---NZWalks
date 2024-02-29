@@ -9,7 +9,7 @@ namespace NZWalksAPI.Data
 
 
         //Here we should pass Db options, because we later need to send our own connection through the program.cs
-        public NZWalksDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) 
+        public NZWalksDbContext(DbContextOptions<NZWalksDbContext> dbContextOptions) : base(dbContextOptions) 
         {
             
         }

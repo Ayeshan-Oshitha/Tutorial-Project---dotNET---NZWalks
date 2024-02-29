@@ -7,7 +7,7 @@ using NZWalksAPI.Mappings;
 using NZWalksAPI.Repositories;
 using System.Text;
 using Microsoft.OpenApi.Models;
-using System.Security.Cryptography.Xml;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

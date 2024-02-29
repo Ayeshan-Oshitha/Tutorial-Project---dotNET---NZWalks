@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace NZWalksAPI.Controllers
 
     [ApiController]  // Tells taht, This Controller is for API use
 
-
+    [Authorize]   //401 error means unauthorized
 
     //action methods - to create , read, update, delete
     public class RegionsController : ControllerBase

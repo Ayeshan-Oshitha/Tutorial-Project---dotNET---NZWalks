@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
+using NZWalksAPI.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -113,11 +114,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 app.UseHttpsRedirection();
 
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.UseStaticFiles(new StaticFileOptions
 {

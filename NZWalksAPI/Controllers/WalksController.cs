@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using NZWalksAPI.CustomActionFilters;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
@@ -46,11 +47,7 @@ namespace NZWalksAPI.Controllers
 
                 var walkdto = _mapper.Map<WalkDto>(walkDomainModel);
                 return Ok(walkdto);
-            
-
-            
-
-            
+   
             
         }
 
@@ -66,9 +63,10 @@ namespace NZWalksAPI.Controllers
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
 
-           
-
                 var walksDomainModel = await _walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
+
+                // Create an exception - to test middleware
+                throw new Exception("This is a new exception");
 
                 //Map Domain Model to DTO
                 var walksDto = _mapper.Map<List<WalkDto>>(walksDomainModel);

@@ -66,10 +66,7 @@ namespace NZWalksAPI.Controllers
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
 
-            try
-            {
-
-                throw new Exception("This was the error");
+           
 
                 var walksDomainModel = await _walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
 
@@ -77,12 +74,7 @@ namespace NZWalksAPI.Controllers
                 var walksDto = _mapper.Map<List<WalkDto>>(walksDomainModel);
 
                 return Ok(walksDto);
-            }
-
-            catch (Exception ex)
-            {
-                return Problem("Something went wrong", null, (int)HttpStatusCode.InternalServerError);
-            }
+            
         }
 
 

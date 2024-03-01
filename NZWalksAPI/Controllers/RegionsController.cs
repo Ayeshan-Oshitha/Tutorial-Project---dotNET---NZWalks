@@ -8,6 +8,7 @@ using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
 using NZWalksAPI.Repositories;
+using System.Text.Json;
 
 namespace NZWalksAPI.Controllers
 {
@@ -25,13 +26,15 @@ namespace NZWalksAPI.Controllers
         private readonly NZWalksDbContext _nZWalksDbContext;
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<RegionsController> _logger;
 
-        public RegionsController(NZWalksDbContext dbContext,IRegionRepository regionRepository, IMapper mapper
-            )
+        public RegionsController(NZWalksDbContext dbContext,IRegionRepository regionRepository, IMapper mapper,
+            ILogger<RegionsController> logger)
         {
             this._nZWalksDbContext = dbContext;
             this._regionRepository = regionRepository;   //this keyword is not essential
             this._mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -42,18 +45,25 @@ namespace NZWalksAPI.Controllers
         //GET ALL REGIONS
         // GET: https//localhost:portnumber/api/regions
         [HttpGet]
-        [Authorize(Roles = "Reader,Writer")]  // If everyone can access this Get method, Then we can do it by "not specifying the any roles"
+       //[Authorize(Roles = "Reader,Writer")]  
         public async Task<IActionResult> GetAll()
         {
+
+            _logger.LogInformation("GetAllRegions Action Method was invoked");
+
             // --- Get Data From Database - Domain models ---
             var regionsDomain = await _regionRepository.GetAllAsync();
 
             // --- Map Domain Model to DTOs --- USING Mappers
+
+            _logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");  //$ symbol used to convert this to  JSON object
             var regionsDto = _mapper.Map<List<RegionDto>>(regionsDomain);
 
 
             // --- Return DTOs ---
             return Ok(regionsDto);
+
+           
 
         }
 

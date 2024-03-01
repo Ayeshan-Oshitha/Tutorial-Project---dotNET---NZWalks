@@ -50,24 +50,30 @@ namespace NZWalksAPI.Controllers
         {
 
 
-            _logger.LogWarning("This is a warning log");
+            try
+            {
 
-            _logger.LogError("This is a error log");
-
-
-            // --- Get Data From Database - Domain models ---
-            var regionsDomain = await _regionRepository.GetAllAsync();
-
-            // --- Map Domain Model to DTOs --- USING Mappers
-
-            _logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");  //$ symbol used to convert this to  JSON object
-            var regionsDto = _mapper.Map<List<RegionDto>>(regionsDomain);
+                throw new Exception("This is a custom exception");
 
 
-            // --- Return DTOs ---
-            return Ok(regionsDto);
+                // --- Get Data From Database - Domain models ---
+                var regionsDomain = await _regionRepository.GetAllAsync();
 
-           
+                // --- Map Domain Model to DTOs --- USING Mappers
+
+                _logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");  //$ symbol used to convert this to  JSON object
+                var regionsDto = _mapper.Map<List<RegionDto>>(regionsDomain);
+
+
+                // --- Return DTOs ---
+                return Ok(regionsDto);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
 
         }
 

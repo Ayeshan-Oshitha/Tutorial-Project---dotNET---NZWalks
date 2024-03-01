@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var logger = new LoggerConfiguration()
     .WriteTo.Console()
-    .MinimumLevel.Information()
+    .MinimumLevel.Warning()
     .CreateLogger();
 
 builder.Logging.ClearProviders();

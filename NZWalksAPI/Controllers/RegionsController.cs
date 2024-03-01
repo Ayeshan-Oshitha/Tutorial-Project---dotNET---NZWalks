@@ -49,7 +49,11 @@ namespace NZWalksAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
 
-            _logger.LogInformation("GetAllRegions Action Method was invoked");
+
+            _logger.LogWarning("This is a warning log");
+
+            _logger.LogError("This is a error log");
+
 
             // --- Get Data From Database - Domain models ---
             var regionsDomain = await _regionRepository.GetAllAsync();
